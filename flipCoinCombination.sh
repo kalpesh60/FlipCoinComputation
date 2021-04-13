@@ -1,142 +1,197 @@
 #!/bin/bash -x
-echo "welcome to flip coin computation problem"
 
-for (( i=1;i<=20;i++ ))
+echo "welcome to flip coin combination problem"
+
+loop=20
+declare -A coin
+singletcombination ( ) {
+
+coin[heads]=0
+coin[tails]=0
+
+for (( i=0; i<$loop; i++ ))
 do
-num=$(( $RANDOM % 2 ))
-  if [ $num -eq 0 ]
-    then
-        echo "Head"
-        let count1++
-  else
-        echo "Tail"
-        let count2++
-  fi
+coinflip=$((RANDOM%2))
+
+if [ $coinflip -eq 0 ]
+then
+	echo " coin flips head "
+	coin[heads]=$(( ${coin[heads]}+1 ))
+else
+	echo "coin flips tail "
+	coin[tails]=$(( ${coin[tails]}+1 ))
+fi
+
 done
 
-echo $count1
-echo $count2
+echo "number of head flips:" ${coin[heads]} 
+echo "number of tail flips:" ${coin[tails]}
 
-dict1[Head]="$count1"
-dict1[Tail]="$count2"
+sumofheadtail=$(( ${coin[heads]}+${coin[tails]} ))
+percentageofHeads=$(( (${coin[heads]}*100)/$sumofheadtail ))
+percentageofTails=$(( (${coin[tails]}*100)/$sumofheadtail ))
 
-percentage_of_head=$(( $count1 * 5 ))
-percentage_of_tail=$(( $count2 * 5 ))
+echo "percentage of heads:" $percentageofHeads"%"
+echo "percentage of tails:" $percentageofTails"%"
 
-echo "Percentage_of_head : $percentage_of_head"
-echo "Percentage_of_tail : $percentage_of_tail"
+}
 
-for (( i=1;i<=20;i++ ))
+doubletcombination ( ) {
+
+coin[headhead]=0
+coin[headtail]=0
+coin[tailhead]=0
+coin[tailtail]=0
+
+for (( i=0; i<$loop; i++ ))
 do
-num1=$(( 1 + $RANDOM % 4 ))
-  if [ $num1 -eq 1 ]
-    then
-        echo "HH"
-        let counthh++
-  elif [ $num1 -eq 2 ]
-   then     echo "TT"
-        let counttt++
-  elif [ $num1 -eq 3 ]
-    then    echo "HT"
-        let countht++
-  else [ $num1 -eq 4 ]
-        echo "TH"
-        let countth++
+firstcoinflip=$((RANDOM%2))
+secondcoinflip=$((RANDOM%2))
 
-  fi
+if [ $firstcoinflip -eq 0 -a $secondcoinflip -eq 0 ]
+then
+	echo " it is a head_head combination"
+	coin[headhead]=$(( ${coin[headhead]}+1 ))
+elif [ $firstcoinflip -eq 0 -a $secondcoinflip -eq 1 ]
+then
+	echo "it is a head_tail combination"
+	coin[headtail]=$(( ${coin[headtail]}+1 ))
+elif [ $firstcoinflip -eq 1 -a $secondcoinflip -eq 0 ]
+then
+        echo "it is a tail_head combination"
+        coin[tailhead]=$(( ${coin[tailhead]}+1 ))
+elif [ $firstcoinflip -eq 1 -a $secondcoinflip -eq 1 ]
+then
+        echo "it is a tail_tail combination"
+        coin[tailtail]=$(( ${coin[tailtail]}+1 ))
+fi
 done
 
-echo $counthh
-echo $counttt
-echo $countht
-echo $countth
+echo " number of head_head combination flips" ${coin[headhead]}
+echo " number of head_tail combination flips" ${coin[headtail]}
+echo " number of tail_head combination flips" ${coin[tailhead]}
+echo " number of tail_tail combination flips" ${coin[tailtail]}
 
-dict1[HH]="$counthh"
-dict1[TT]="$counttt"
-dict1[HT]="$countht"
-dict1[TH]="$countth"
+sumofcombinations=$(( ${coin[headhead]}+${coin[headtail]}+${coin[tailhead]}+${coin[tailtail]} ))
+percentageofHeadHead=$(( (${coin[headhead]}*100)/$sumofcombinations ))
+percentageofHeadTail=$(( (${coin[headtail]}*100)/$sumofcombinations ))
+percentageofTailHead=$(( (${coin[tailhead]}*100)/$sumofcombinations ))
+percentageofTailTail=$(( (${coin[tailtail]}*100)/$sumofcombinations ))
 
-percentage_of_hh=$(( $counthh * 5 ))
-percentage_of_tt=$(( $counttt * 5 ))
-percentage_of_ht=$(( $countht * 5 ))
-percentage_of_th=$(( $countth * 5 ))
+echo " percentage of head_head combination:" $percentageofHeadHead"%"
+echo " percentage of head_tail combination:" $percentageofHeadTail"%"
+echo " percentage of tail_head combination:" $percentageofTailHead"%"
+echo " percentage of tail_tail combination:" $percentageofTailTail"%"
 
-echo "Percentage_of_HH : $percentage_of_hh"
-echo "Percentage_of_TT : $percentage_of_tt"
-echo "Percentage_of_HT : $percentage_of_ht"
-echo "Percentage_of_TH : $percentage_of_th"
+}
 
-for (( i=1;i<=20;i++ ))
+tripletcombination ( ) {
+
+coin[headheadhead]=0
+coin[headheadtail]=0
+coin[headtailhead]=0
+coin[headtailtail]=0
+coin[tailheadhead]=0
+coin[tailheadtail]=0
+coin[tailtailhead]=0
+coin[tailtailtail]=0
+
+for (( i=0; i<$loop; i++ ))
 do
-num1=$(( 1 + $RANDOM % 8 ))
-  if [ $num1 -eq 1 ]
-    then
-        echo "HHH"
-        let counthhh++
-  elif [ $num1 -eq 2 ]
-   then     echo "TTT"
-        let countttt++
-  elif [ $num1 -eq 3 ]
-    then    echo "HHT"
-        let counthht++
-  elif [ $num1 -eq 4 ]
-   then     echo "HTH"
-        let counthth++
-  elif [ $num1 -eq 5 ]
-    then    echo "THH"
-        let countthh++
-  elif [ $num1 -eq 6 ]
-   then     echo "TTH"
-        let counttth++
-  elif [ $num1 -eq 7 ]
-    then    echo "THT"
-        let counttht++
-  else [ $num1 -eq 8 ]
-        echo "HTT"
-        let counthtt++
+firstcoinflip=$((RANDOM%2))
+secondcoinflip=$((RANDOM%2))
+thirdcoinflip=$((RANDOM%2))
 
-  fi
+if [ $firstcoinflip -eq 0 -a $secondcoinflip -eq 0 -a $thirdcoinflip -eq 0 ]
+then
+        echo " it is a head_head_head combination"
+        coin[headheadhead]=$(( ${coin[headheadhead]}+1 ))
+
+elif [ $firstcoinflip -eq 0 -a $secondcoinflip -eq 0 -a $thirdcoinflip -eq 1 ]
+then
+        echo "it is a head_head_tail combination"
+        coin[headheadtail]=$(( ${coin[headheadtail]}+1 ))
+
+elif [ $firstcoinflip -eq 0 -a $secondcoinflip -eq 1 -a $thirdcoinflip -eq 0  ]
+then
+        echo "it is a head_tail_head combination"
+        coin[headtailhead]=$(( ${coin[headtailhead]}+1 ))
+
+elif [ $firstcoinflip -eq 0 -a $secondcoinflip -eq 1 -a $thirdcoinflip -eq 1  ]
+then
+        echo "it is a head_tail_tail combination"
+        coin[headtailtail]=$(( ${coin[headtailtail]}+1 ))
+elif [ $firstcoinflip -eq 1 -a $secondcoinflip -eq 0 -a $thirdcoinflip -eq 0 ]
+then
+        echo " it is a tail_head_head combination"
+        coin[tailheadhead]=$(( ${coin[tailheadhead]}+1 ))
+
+elif [ $firstcoinflip -eq 1 -a $secondcoinflip -eq 0 -a $thirdcoinflip -eq 1 ]
+then
+        echo "it is a tail_head_tail combination"
+        coin[tailheadtail]=$(( ${coin[tailheadtail]}+1 ))
+
+elif [ $firstcoinflip -eq 1 -a $secondcoinflip -eq 1 -a $thirdcoinflip -eq 0  ]
+then
+        echo "it is a tail_tail_head combination"
+        coin[tailtailhead]=$(( ${coin[tailtailhead]}+1 ))
+
+elif [ $firstcoinflip -eq 1 -a $secondcoinflip -eq 1 -a $thirdcoinflip -eq 1  ]
+then
+        echo "it is a head_tail_tail combination"
+        coin[tailtailtail]=$(( ${coin[tailtailtail]}+1 ))
+
+fi
 done
 
+echo " number of head_head_head combination flips" ${coin[headheadhead]}
+echo " number of head_head_tail combination flips" ${coin[headheadtail]}
+echo " number of head_tail_head combination flips" ${coin[headtailhead]}
+echo " number of head_tail_tail combination flips" ${coin[headtailtail]}
+echo " number of tail_head_head combination flips" ${coin[tailheadhead]}
+echo " number of tail_head_tail combination flips" ${coin[tailheadtail]}
+echo " number of tail_tail_head combination flips" ${coin[tailtailhead]}
+echo " number of tail_tail_tail combination flips" ${coin[tailtailtail]}
 
-echo $counthhh
-echo $countttt
-echo $counthht
-echo $counthth
-echo $countthh
-echo $counttth
-echo $counttht
-echo $counthtt
-
-
-dict1[HHH]="$counthhh"
-dict1[TTT]="$countttt"
-dict1[HHT]="$counthht"
-dict1[HTH]="$counthth"
-dict1[THH]="$countthh"
-dict1[TTH]="$counttth"
-dict1[THT]="$counttht"
-dict1[HTT]="$counthtt"
-
-
-#hhh=1 ttt=2 hht=3 hth=4 thh=5 tth=6 tht=7 htt=8
+sumofcombinations=$(( ${coin[headheadhead]}+${coin[headheadtail]}+${coin[headtailhead]}+${coin[headtailtail]}+ ${coin[tailheadhead]}+${coin[tailheadtail]}+${coin[tailtailhead]}+${coin[tailtailtail]} ))
+percentageofHeadHeadHead=$(( (${coin[headheadhead]}*100)/$sumofcombinations ))
+percentageofHeadHeadTail=$(( (${coin[headheadtail]}*100)/$sumofcombinations ))
+percentageofHeadTailHead=$(( (${coin[headtailhead]}*100)/$sumofcombinations ))
+percentageofHeadTailTail=$(( (${coin[headtailtail]}*100)/$sumofcombinations ))
+percentageofTailHeadHead=$(( (${coin[tailheadhead]}*100)/$sumofcombinations ))
+percentageofTailHeadTail=$(( (${coin[tailheadtail]}*100)/$sumofcombinations ))
+percentageofTailTailHead=$(( (${coin[tailtailhead]}*100)/$sumofcombinations ))
+percentageofTailTailTail=$(( (${coin[tailtailtail]}*100)/$sumofcombinations ))
 
 
-percentage_of_hhh=$(( $counthhh * 5 ))
-percentage_of_ttt=$(( $countttt * 5 ))
-percentage_of_hht=$(( $counthht * 5 ))
-percentage_of_hth=$(( $counthth * 5 ))
-percentage_of_thh=$(( $countthh * 5 ))
-percentage_of_tth=$(( $counttth * 5 ))
-percentage_of_tht=$(( $counttht * 5 ))
-percentage_of_htt=$(( $counthtt * 5 ))
+echo " percentage of head_head_head combination:" $percentageofHeadHeadHead"%"
+echo " percentage of head_head_tail combination:" $percentageofHeadHeadTail"%"
+echo " percentage of head_tail_head combination:" $percentageofHeadTailHead"%"
+echo " percentage of head_tail_tail combination:" $percentageofHeadTailTail"%"
+echo " percentage of tail_head_head combination:" $percentageofTailHeadHead"%"
+echo " percentage of tail_head_tail combination:" $percentageofTailHeadTail"%"
+echo " percentage of tail_tail_head combination:" $percentageofTailTailHead"%"
+echo " percentage of tail_tail_tail combination:" $percentageofTailTailTail"%"
 
 
-echo "Percentage_of_HHH : $percentage_of_hhh"
-echo "Percentage_of_TTT : $percentage_of_ttt"
-echo "Percentage_of_HHT : $percentage_of_hht"
-echo "Percentage_of_HTH : $percentage_of_hth"
-echo "Percentage_of_THH : $percentage_of_thh"
-echo "Percentage_of_TTH : $percentage_of_tth"
-echo "Percentage_of_THT : $percentage_of_tht"
-echo "Percentage_of_HTT : $percentage_of_htt"
+}
+singletcombination
+doubletcombination
+tripletcombination
+
+variable=${coin[@]}
+for values in $variable
+do
+	array[count]=$values
+	count=$(( $count+1 ))
+done
+echo " array values are:" ${array[@]}
+
+sort=`echo ${array[@]} | awk 'BEGIN{RS=" ";} {print $1}' | sort -n`
+
+counter=0
+for values in $sort
+do
+sortedarray[((counter++))]="$values"
+done
+echo "winning combination value:" ${sortedarray[${#sortedarray[@]}-1]}
